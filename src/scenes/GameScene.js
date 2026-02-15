@@ -143,11 +143,6 @@ export default class GameScene extends Phaser.Scene {
             this.highScoreText.setText('High Score: ' + Math.floor(this.highScore));
             localStorage.setItem('ella_highscore', Math.floor(this.highScore));
         }
-
-        // Win Condition
-        if (this.score >= WIN_SCORE) {
-            this.winGame();
-        }
     }
 
     jump() {
@@ -207,7 +202,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.pause();
         this.spawnTimer.paused = true;
         this.player.die();
-        this.time.delayedCall(1000, () => this.scene.start('MenuScene'));
+        this.time.delayedCall(1000, () => this.scene.start('WinScene', { score: Math.floor(this.score), isGameOver: true }));
     }
 
     winGame() {

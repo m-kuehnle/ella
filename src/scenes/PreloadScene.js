@@ -39,8 +39,8 @@ export default class PreloadScene extends Phaser.Scene {
 
         this.load.path = 'assets/';
         this.load.image('ella_raw', 'ella.png');
-        this.load.image('ground_raw', 'ground.png');
-        this.load.image('background_raw', 'background.png');
+        this.load.image('ground', 'ground.png');
+        this.load.image('background', 'background.png');
 
         // Load item assets (they currently have white backgrounds)
         this.load.image('apple_red_raw', 'apple_red.png');
@@ -60,9 +60,7 @@ export default class PreloadScene extends Phaser.Scene {
                 'apple_green': 'apple_green_raw',
                 'heart': 'heart_raw',
                 'rose': 'rose_raw',
-                'chocolate': 'chocolate_raw',
-                'ground': 'ground_raw',
-                'background': 'background_raw'
+                'chocolate': 'chocolate_raw'
             });
 
             Logger.success('Texture processing complete.', 'PreloadScene');

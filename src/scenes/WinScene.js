@@ -5,6 +5,7 @@ export default class WinScene extends Phaser.Scene {
 
     init(data) {
         this.score = data.score || 0;
+        this.isGameOver = data.isGameOver || false;
     }
 
     create() {
@@ -14,11 +15,12 @@ export default class WinScene extends Phaser.Scene {
         this.add.tileSprite(0, 0, width, height, 'background').setOrigin(0, 0);
 
         // Message
-        const message = "Level Clear!\n\nGreat Job\nElla!\n\nFinal Score: " + this.score;
+        const title = this.isGameOver ? "Game Over!" : "Level Clear!";
+        const message = `${title}\n\nGreat Job Ella!\n\nFinal Score: ${this.score}`;
 
         this.add.text(width / 2, height / 3, message, {
             font: '32px Arial',
-            fill: '#ff0055',
+            fill: this.isGameOver ? '#ff0000' : '#ff0055',
             align: 'center',
             stroke: '#ffffff',
             strokeThickness: 6
