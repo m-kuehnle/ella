@@ -1,4 +1,7 @@
-import { ASSETS } from '../Constants.js';
+import {
+    ASSETS, GROUND_Y_OFFSET, SPAWN_X_OFFSET, SPAWN_CHANCE_OBSTACLE,
+    OBSTACLE_SCALE, COLLECTIBLE_SCALE, OFFSCREEN_THRESHOLD
+} from '../Constants.js';
 
 export default class Spawner {
     constructor(scene) {
@@ -9,13 +12,12 @@ export default class Spawner {
 
     spawn(gameSpeed) {
         const { width, height } = this.scene.scale;
-        const groundHeight = 128;
-        const bottomY = this.scene.scale.height - groundHeight;
+        const bottomY = height - GROUND_Y_OFFSET;
 
         // Spawn further off-screen to handle wider views
-        const spawnX = width + 300;
+        const spawnX = width + SPAWN_X_OFFSET;
 
-        if (Math.random() < 0.4) {
+        if (Math.random() < SPAWN_CHANCE_OBSTACLE) {
             this.spawnObstacle(spawnX, bottomY, gameSpeed);
         } else {
             this.spawnCollectible(spawnX, bottomY, gameSpeed);
@@ -27,7 +29,7 @@ export default class Spawner {
         const yPos = bottomY - 20;
 
         const obstacle = this.obstacles.create(x, yPos, ASSETS.OBSTACLE);
-        obstacle.setScale(0.12);
+        obstacle.setScale(OBSTACLE_SCALE);
         obstacle.setVelocityX(-gameSpeed * 60);
         obstacle.body.allowGravity = false;
         obstacle.setImmovable(true);
@@ -49,7 +51,7 @@ export default class Spawner {
         }
 
         const item = this.collectibles.create(x, yPos, type);
-        item.setScale(0.1);
+        item.setScale(COLLECTIBLE_SCALE);
         item.setVelocityX(-gameSpeed * 60);
         item.body.allowGravity = false;
 
@@ -60,13 +62,13 @@ export default class Spawner {
     update() {
         // Remove off-screen items
         this.obstacles.getChildren().forEach(obstacle => {
-            if (obstacle.x < -200) {
+            if (obstacle.x < OFFSCREEN_THRESHOLD) {
                 obstacle.destroy();
             }
         });
 
         this.collectibles.getChildren().forEach(item => {
-            if (item.x < -200) {
+            if (item.x < OFFSCREEN_THRESHOLD) {
                 item.destroy();
             }
         });
