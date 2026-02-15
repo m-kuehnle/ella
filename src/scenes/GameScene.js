@@ -20,13 +20,26 @@ export default class GameScene extends Phaser.Scene {
         const visibleWidth = width / CAMERA_ZOOM;
         const visibleHeight = height / CAMERA_ZOOM;
 
-        // Background
-        this.background = this.add.tileSprite(width / 2, height / 2, visibleWidth, visibleHeight, 'background');
+        // Background - Position at the very top of the camera view (-80) and set height to visibleHeight (800)
+        // This ensures the background perfectly matches the 1.25x scale (800/640)
+        const bgScale = 1.25;
+        this.background = this.add.tileSprite(width / 2, -80, visibleWidth, 800, 'background');
+        this.background.setOrigin(0.5, 0);
         this.background.setScrollFactor(0);
+        this.background.setTileScale(bgScale, bgScale);
 
-        // Ground
-        this.ground = this.add.tileSprite(width / 2, height - 30, visibleWidth, 100, 'ground');
+        // Ground - Now with transparency! Aligning with Ella's feet
+        const groundHeight = 40;
+        this.ground = this.add.tileSprite(width / 2, height - 128, visibleWidth, groundHeight, 'ground');
+        this.ground.setTileScale(0.3, 0.3);
+
         this.physics.add.existing(this.ground, true);
+
+        // Adjust physics body to be at the top of the visual ground if necessary
+        // Assuming the "ground" is in the upper part of the ground asset or it's a solid block
+        // If Ella is floating, she hits the top of the 'groundHeight' block.
+        // Let's make the collider smaller and move it if she's still too high.
+        // For now, let's keep it at the top of the sprite which is at height - groundHeight
         this.ground.body.updateFromGameObject();
 
         // Player
@@ -122,8 +135,8 @@ export default class GameScene extends Phaser.Scene {
     update() {
         if (this.isGameOver || this.isPaused) return;
 
-        // Move background
-        this.background.tilePositionX += this.gameSpeed;
+        // Move background (parallax effect)
+        this.background.tilePositionX += this.gameSpeed * 0.2;
         this.ground.tilePositionX += this.gameSpeed;
 
         // Update Spawner (clean up off-screen)

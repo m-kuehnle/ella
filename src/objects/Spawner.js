@@ -9,8 +9,8 @@ export default class Spawner {
 
     spawn(gameSpeed) {
         const { width, height } = this.scene.scale;
-        const groundHeight = 50;
-        const bottomY = height - groundHeight;
+        const groundHeight = 128;
+        const bottomY = this.scene.scale.height - groundHeight;
 
         // Spawn further off-screen to handle wider views
         const spawnX = width + 300;
